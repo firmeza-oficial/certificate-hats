@@ -81,15 +81,14 @@
             primer drop de gorras exclusivas
           </span> de Grupo Firmeza. 
           Cada pieza ha sido diseñada y fabricada a lujo de detalle. <br><br>
-          <span class="font-semibold text-emerald-400">
-            Estás confirmando la autenticidad de la pieza número:
-          </span>
+          En este momento 
+          <span>estás verificando la originalidad de pieza número:</span>
         </p>
       </div>
 
       <!-- Número de edición + estado -->
       <div class="fade-in-up" id="edition-number">
-        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient glow-white tracking-wide font-oswald" id="number-counter">—/—</div>
+        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient  glow-white tracking-wide font-oswald" id="number-counter">—/—</div>
         <div id="verify-pill" class="inline-block mt-2 px-3 py-1 text-sm rounded-full border border-white/20 text-white/90 font-montserrat">
           Verificando...
         </div>
@@ -97,10 +96,10 @@
 
       <!-- CTA -->
       <div class="fade-in-up mt-10" id="cta-button">
-        <a href="https://tu-link-a-musica.com" target="_blank" rel="noopener"
-           class="inline-block bg-white text-black px-12 py-4 text-xl font-semibold tracking-wider rounded-full hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-oswald"
+        <a href="https://atom.bio/grupofirmezaoficial" target="_blank" rel="noopener"
+           class="inline-block rounded-md bg-white text-black px-12 py-4 text-xl font-semibold tracking-wider hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-oswald"
            id="listen-btn">
-          Vive la experiencia Firmeza
+          ¡ESCÚCHANOS AQUÍ!
         </a>
       </div>
     </div>
@@ -109,8 +108,9 @@
   <!-- FOOTER -->
   <footer class="py-12 text-center text-gray-500 z-10 relative">
     <div class="fade-in-up" id="footer">
-      <p class="font-signature text-2xl mb-2">Firmeza</p>
+      <p class="font-oswald text-2xl mb-2">GRUPO FIRMEZA  X  LS HATS</p>
       <p class="text-sm font-montserrat">Edición Limitada © 2025</p>
+      <p class="text-sm font-montserrat">Cada gorra de este drop es de numero es unico, cualquier intento de copia sera demandado por derechos de autor</p>
     </div>
   </footer>
 
@@ -145,7 +145,7 @@
     window.addEventListener('load', ()=>{ createParticles(); });
   </script>
 
-  <!-- Audio: intento de autoplay (mute) + desbloqueo en primer toque -->
+  <!-- Audio: autoplay (mute) + desbloqueo primer toque + pausar/reanudar al cambiar de pestaña -->
   <script>
     (function setupAutoplay(){
       const params = new URLSearchParams(location.search);
@@ -159,7 +159,7 @@
         audio.play().catch(()=>{ /* se intentará tras el primer toque */ });
       }
 
-      // En el primer toque: desmutear y reproducir
+      // Primer toque: desmutear y reproducir
       const unlock = () => {
         audio.muted = false;
         audio.play().catch(()=>{});
@@ -168,6 +168,16 @@
       };
       document.addEventListener('click', unlock, { once: true });
       document.addEventListener('touchstart', unlock, { once: true });
+
+      // Pausar al salir de la pestaña y reanudar al volver
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          if (!audio.paused) audio.pause();
+        } else {
+          // Reanudar automáticamente (si el navegador lo permite)
+          audio.play().catch(()=>{});
+        }
+      });
     })();
   </script>
 
