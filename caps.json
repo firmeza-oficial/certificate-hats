@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "token": "exclusiva1/15",
+    "image": "assets/cap-1.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 2,
+    "token": "exclusiva2/15",
+    "image": "assets/cap-2.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 3,
+    "token": "exclusiva3/15",
+    "image": "assets/cap-3.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 4,
+    "token": "exclusiva4/15",
+    "image": "assets/cap-4.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 5,
+    "token": "exclusiva5/15",
+    "image": "assets/cap-5.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 6,
+    "token": "exclusiva6/15",
+    "image": "assets/cap-6.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 7,
+    "token": "exclusiva7/15",
+    "image": "assets/cap-7.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 8,
+    "token": "exclusiva8/15",
+    "image": "assets/cap-8.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 9,
+    "token": "exclusiva9/15",
+    "image": "assets/cap-9.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 10,
+    "token": "exclusiva10/15",
+    "image": "assets/cap-10.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 11,
+    "token": "exclusiva11/15",
+    "image": "assets/cap-11.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 12,
+    "token": "exclusiva12/15",
+    "image": "assets/cap-12.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 13,
+    "token": "exclusiva13/15",
+    "image": "assets/cap-13.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 14,
+    "token": "exclusiva14/15",
+    "image": "assets/cap-14.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  },
+  {
+    "id": 15,
+    "token": "exclusiva15/15",
+    "image": "assets/cap-15.jpg",
+    "model": "Firmeza Drop I",
+    "color": "Rojo/Negro",
+    "size": "Adjustable",
+    "mintDate": "2025-08-28",
+    "status": "Nueva"
+  }
+]

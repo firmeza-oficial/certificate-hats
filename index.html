@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firmeza - Edición Limitada</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+    .font-signature { font-family: 'Playfair Display', serif; }
+    .font-main { font-family: 'Inter', sans-serif; }
+    .font-oswald { font-family: 'Oswald', sans-serif; }
+    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    .crown-animation { animation: crownGlow 3s ease-in-out infinite alternate; }
+    @keyframes crownGlow { 0% { filter: drop-shadow(0 0 10px rgba(255,255,255,.3)); } 100% { filter: drop-shadow(0 0 20px rgba(255,255,255,.8)); } }
+    .float-animation { animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    .fade-in-up { opacity:0; transform: translateY(30px); transition: all .8s ease; }
+    .fade-in-up.visible { opacity:1; transform: translateY(0); }
+    .particle { position:absolute; width:4px; height:4px; background: rgba(255,255,255,.6); border-radius:50%; pointer-events:none; }
+    .premium-gradient { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%); }
+    .text-gradient { background: linear-gradient(45deg, #ffffff, #cccccc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  </style>
+</head>
+<body class="bg-black text-white font-main overflow-x-hidden">
+  <!-- Particles Container -->
+  <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+  <!-- Hero Section -->
+  <!-- Hero Section (CORREGIDO) -->
+<section class="relative min-h-screen flex flex-col items-center justify-center px-16  z-16">
+  <div class="relative flex flex-col items-center justify-center w-full">
+
+    <!-- Layer 1: Corona (arriba) - POSICIÓN AJUSTADA -->
+    <div class="absolute inset-0 flex items-start justify-center z-10 pointer-events-none ">
+      <img
+        src="./assetss/Corona.svg"
+        alt="Corona"
+        class="w-[28rem] h-[28rem] crown-animation object-contain scale-[2.2] -translate-y-24"
+      />
+    </div>
+     <div class="absolute inset-0 z-30 pointer-events-none">
+      <div class="absolute bottom-1/3 left-1/2 -translate-x-1/2 w-196 h-132 bg-gradient-to-t from-black via-transparent to-transparent blur-sm"></div>
+    </div>
+    <!-- Layer 2: Gorra -->
+    <div class="relative z-20 mb-8 float-animation">
+      <img
+        src="./assetss/gorra-front.png"
+        alt="Gorra Firmeza"
+        class="w-80 h-80 object-contain scale-[1.5]  "
+        id="hero-cap"
+      />
+    </div>
+
+   
+    <!-- Layer 4: Firmeza -->
+    <div class="relative z-40 fade-in-up" id="brand-name">
+      <img
+        src="./assetss/Firmeza.svg"
+        alt="Firmeza"
+        class="h-32 md:h-32 object-contain scale-[1.5]"
+      />
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- Certificate Section -->
+  <section class="relative py-20 px-4 z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <!-- Corona SVG -->
+      
+      <!-- Título con Oswald -->
+      <div class="fade-in-up" id="certificate-title">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 tracking-wider font-oswald">CERTIFICADO DE ORIGINALIDAD</h2>
+      </div>
+
+      <!-- Texto con Montserrat -->
+      <div class="fade-in-up" id="certificate-text">
+        <p class="text-lg md:text-xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-12 font-montserrat">
+          Esta gorra pertenece a la primera edición exclusiva de Firmeza. Cada pieza ha sido diseñada y fabricada con detalle. 
+          En este momento estás verificando la pieza:
+        </p>
+      </div>
+
+      <!-- Número de edición + pill de verificación -->
+      <div class="fade-in-up" id="edition-number">
+        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient font-oswald" id="number-counter">—/—</div>
+        <div id="verify-pill" class="inline-block mt-2 px-3 py-1 text-sm rounded-full border border-white/20 text-white/90 font-montserrat">
+          Verificando...
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="fade-in-up mt-10" id="cta-button">
+        <a href="https://tu-link-a-musica.com" target="_blank" rel="noopener"
+           class="inline-block bg-white text-black px-12 py-4 text-xl font-semibold tracking-wider hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-oswald"
+           id="listen-btn">
+          ¡ESCÚCHANOS AQUÍ!
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 text-center text-gray-500 z-10 relative">
+    <div class="fade-in-up" id="footer">
+      <p class="font-signature text-2xl mb-2">Firmeza</p>
+      <p class="text-sm font-montserrat">Edición Limitada © 2025</p>
+    </div>
+  </footer>
+
+  <!-- Animaciones / Partículas -->
+  <script>
+    // Intersection Observer para fade-in
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); }, observerOptions);
+    document.querySelectorAll('.fade-in-up').forEach(el=>observer.observe(el));
+
+    // Partículas
+    function createParticles(){
+      const container = document.getElementById('particles-container'); const n=50;
+      for(let i=0;i<n;i++){ const p=document.createElement('div'); p.classList.add('particle');
+        p.style.left=Math.random()*100+'%'; p.style.top=Math.random()*100+'%'; p.style.animationDelay=Math.random()*4+'s';
+        p.style.animation = `particleFloat ${3+Math.random()*4}s ease-in-out infinite, particleFade ${2+Math.random()*3}s ease-in-out infinite alternate`;
+        container.appendChild(p);
+      }
+    }
+    const style=document.createElement('style'); style.textContent=`
+      @keyframes particleFloat{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-20px) translateX(10px)}50%{transform:translateY(-10px) translateX(-5px)}75%{transform:translateY(-30px) translateX(-10px)}}
+      @keyframes particleFade{0%{opacity:.2}100%{opacity:.8}}
+      @keyframes cursorFade{to{opacity:0; transform:scale(3)}}
+    `; document.head.appendChild(style);
+
+    // Efecto cursor glow
+    document.addEventListener('mousemove',(e)=>{ const c=document.createElement('div'); c.className='fixed w-1 h-1 bg-white rounded-full pointer-events-none z-50 opacity-50';
+      c.style.left=e.clientX+'px'; c.style.top=e.clientY+'px'; c.style.animation='cursorFade .5s ease-out forwards'; document.body.appendChild(c);
+      setTimeout(()=>c.remove(),500);
+    });
+
+    // Init
+    window.addEventListener('load', ()=>{ createParticles(); });
+  </script>
+
+  <!-- Verificación NFC / contador dinámico -->
+  <script>
+    (async function certificado(){
+      const TOTAL = 15; // cambia si tu tiraje cambia
+      const $ = sel => document.querySelector(sel);
+      const params = new URLSearchParams(location.search);
+      const id = Number(params.get('id'));
+      const k  = (params.get('k') || '').trim(); // si el token tiene '/', la URL debe usar %2F
+
+      const $counter = $('#number-counter');
+      const $pill    = $('#verify-pill');
+      const $hero    = $('#hero-cap');
+
+      if (!id || !k) {
+        if ($counter) $counter.textContent = '—/—';
+        if ($pill) { $pill.textContent = 'Faltan parámetros (?id=&k=)'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-yellow-500/40 text-yellow-300 font-montserrat'; }
+        return;
+      }
+
+      // pinta rápido el contador
+      if ($counter) $counter.textContent = `${id}/${TOTAL}`;
+
+      try {
+        const res = await fetch('./caps.json', { cache:'no-store' });
+        const caps = await res.json();
+        const cap = caps.find(c => Number(c.id) === id);
+
+        if (!cap) {
+          if ($pill) { $pill.textContent = `No existe la gorra #${id}`; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-red-500/40 text-red-300 font-montserrat'; }
+          return;
+        }
+
+        const ok = (cap.token === k);
+        if ($pill) {
+          if (ok) { $pill.textContent='Certificado válido'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-emerald-500/40 text-emerald-300 font-montserrat'; }
+          else { $pill.textContent='Token incorrecto'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-red-500/40 text-red-300 font-montserrat'; }
+        }
+
+        if ($hero && cap.image) $hero.src = cap.image;
+        document.title = `Firmeza #${id}/${TOTAL} – Certificado`;
+
+      } catch (e) {
+        if ($pill) { $pill.textContent='Error cargando caps.json'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-yellow-500/40 text-yellow-300 font-montserrat'; }
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>
