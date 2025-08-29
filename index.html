@@ -160,7 +160,7 @@
         audio.play().catch(()=>{});
       }
 
-      // 2) Force unlock: dispara play() dentro del MISMO callback del gesto
+      // 2) Force unlock: play() dentro del MISMO callback del gesto
       function unlockNow() {
         try {
           audio.muted  = false;
@@ -168,14 +168,14 @@
           const p = audio.play();
           if (p && typeof p.then === 'function') {
             p.then(()=>{ console.log('Audio desbloqueado 🎶'); })
-             .catch(()=>{ /* si falla, el botón también lo intentará */ });
+             .catch(()=>{ /* el botón también lo intentará */ });
           }
         } catch(e) {}
         document.removeEventListener('touchend', unlockNow);
         document.removeEventListener('click', unlockNow);
       }
       document.addEventListener('touchend', unlockNow, { once:true });
-      document.addEventListener('click', unlockNow, { once:true });
+      document.addEventListener('click',    unlockNow, { once:true });
 
       // 3) Pausar al salir y reanudar al volver (si ya estuvo desbloqueado)
       document.addEventListener('visibilitychange', () => {
@@ -191,29 +191,41 @@
     })();
   </script>
 
-  <!-- Hook para el botón (Android/Chrome seguro) -->
+  <!-- Hook para el botón (iOS-friendly + Android/Chrome seguro) -->
   <script>
     (function hookButtonPlay(){
       const btn   = document.getElementById('listen-btn');
       const audio = document.getElementById('anthem');
       if (!btn || !audio) return;
 
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
       btn.addEventListener('click', (e) => {
-        e.preventDefault();                 // no navegues aún
+        if (isIOS) {
+          // iOS: NO impedir el click. Deja que el <a> abra nueva pestaña.
+          try {
+            audio.muted  = false;
+            audio.volume = 1.0;
+            audio.play().catch(()=>{});
+          } catch(e) {}
+          return; // no preventDefault
+        }
+
+        // Android/Chrome: reproducir primero, luego abrir
+        e.preventDefault();
         try {
           audio.muted  = false;
           audio.volume = 1.0;
           const p = audio.play();
           if (p && typeof p.then === 'function') {
             p.finally(() => {
-              // abrir después de intentar reproducir (mantiene el gesto)
-              window.open(btn.href, '_blank', 'noopener');
+              window.open(btn.href, '_blank', 'noopener,noreferrer');
             });
           } else {
-            window.open(btn.href, '_blank', 'noopener');
+            window.open(btn.href, '_blank', 'noopener,noreferrer');
           }
-        } catch(e) {
-          window.open(btn.href, '_blank', 'noopener');
+        } catch (err) {
+          window.open(btn.href, '_blank', 'noopener,noreferrer');
         }
       }, { passive:false });
     })();
@@ -264,7 +276,7 @@
         if (ok) {
           $pill.textContent = 'Certificado válido';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border font-montserrat glow-white';
-          // intento extra por si ya hubo interacción
+          // Intento extra por si ya hubo interacción
           if (audio) { audio.muted = false; audio.volume = 1.0; audio.play().catch(()=>{}); }
         } else {
           $pill.textContent = 'Token incorrecto';
