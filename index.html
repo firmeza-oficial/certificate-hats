@@ -192,3 +192,68 @@
   </script>
 </body>
 </html>
+
+<script>
+  (async function certificado(){
+    const $ = s => document.querySelector(s);
+    const params = new URLSearchParams(location.search);
+
+    // AHORA: id como STRING (no Number)
+    const idStr = (params.get('id') || '').trim();
+    const k     = (params.get('k')  || '').trim();
+
+    const $counter = $('#number-counter');
+    const $pill    = $('#verify-pill');
+    const $hero    = $('#hero-cap');
+
+    if (!idStr || !k) {
+      $counter.textContent = '—/—';
+      $pill.textContent = 'Faltan parámetros (?id=&k=)';
+      $pill.style.borderColor = 'rgba(234,179,8,.5)'; // amarillo
+      return;
+    }
+
+    // Muestra algo bonito en el contador a partir del id "serialnumberX/15-xxxx"
+    let pretty = '—/—';
+    const m = idStr.match(/^serialnumber(\d+)\s*\/\s*(\d+)-/i);
+    if (m) {
+      pretty = `${m[1]}/${m[2]}`;
+    }
+    $counter.textContent = pretty;
+
+    try {
+      const res = await fetch('./caps.json', { cache: 'no-store' });
+      const caps = await res.json();
+
+      // AHORA: comparar por string exacto
+      const cap = caps.find(c => String(c.id) === idStr);
+
+      if (!cap) {
+        $pill.textContent = `No existe el ID: ${idStr}`;
+        $pill.style.borderColor = 'rgba(239,68,68,.5)'; // rojo
+        return;
+      }
+
+      const ok = (cap.token === k);
+      if (ok) {
+        $pill.textContent = 'Certificado válido';
+        $pill.style.borderColor = 'rgba(16,185,129,.5)'; // verde
+      } else {
+        $pill.textContent = 'Token incorrecto';
+        $pill.style.borderColor = 'rgba(239,68,68,.5)';
+      }
+
+      // Imagen: una sola para todas
+      const imgPath = cap.image || 'assetss/gorra-front.png';
+      if ($hero) $hero.src = imgPath;
+
+      // Título de la pestaña
+      document.title = `Firmeza ${pretty} – Certificado`;
+
+    } catch (e) {
+      console.error(e);
+      $pill.textContent = 'Error cargando caps.json';
+      $pill.style.borderColor = 'rgba(234,179,8,.5)';
+    }
+  })();
+</script>
