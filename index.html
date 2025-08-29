@@ -110,7 +110,7 @@
     <div class="fade-in-up" id="footer">
       <p class="font-oswald text-2xl mb-2">GRUPO FIRMEZA  X  LS HATS</p>
       <p class="text-sm font-montserrat">Edición Limitada © 2025</p>
-      <p class="text-sm font-montserrat">Cada gorra de este drop es de numero es unico, cualquier intento de copia sera demandado por derechos de autor</p>
+      <p class="text-sm font-montserrat">Cada gorra de este drop es único, cualquier intento de copia será demandado por derechos de autor</p>
     </div>
   </footer>
 
@@ -145,21 +145,20 @@
     window.addEventListener('load', ()=>{ createParticles(); });
   </script>
 
-  <!-- Audio: autoplay (mute) + desbloqueo primer toque + pausar/reanudar al cambiar de pestaña -->
+  <!-- Audio: autoplay (mute) + desbloqueo primer toque + pausar/reanudar -->
   <script>
     (function setupAutoplay(){
       const params = new URLSearchParams(location.search);
-      const wantPlay = params.get('play') === '1';  // opcional ?play=1
+      const wantPlay = params.get('play') === '1';
       const audio = document.getElementById('anthem');
       if (!audio) return;
 
-      // Intento de autoplay silencioso (algunos navegadores lo permiten)
       audio.muted = true;
       if (wantPlay) {
-        audio.play().catch(()=>{ /* se intentará tras el primer toque */ });
+        audio.play().catch(()=>{});
       }
 
-      // Primer toque: desmutear y reproducir
+      // Primer toque desbloquea
       const unlock = () => {
         audio.muted = false;
         audio.play().catch(()=>{});
@@ -169,26 +168,43 @@
       document.addEventListener('click', unlock, { once: true });
       document.addEventListener('touchstart', unlock, { once: true });
 
-      // Pausar al salir de la pestaña y reanudar al volver
+      // Pausar/reanudar según visibilidad
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           if (!audio.paused) audio.pause();
         } else {
-          // Reanudar automáticamente (si el navegador lo permite)
           audio.play().catch(()=>{});
         }
       });
     })();
   </script>
 
-  <!-- Verificación NFC / Contador dinámico - (IDs string tipo serialnumberX/15-xxxx) -->
+  <!-- Hook para el botón (Android/Chrome seguro) -->
+  <script>
+    (function hookButtonPlay(){
+      const btn   = document.getElementById('listen-btn');
+      const audio = document.getElementById('anthem');
+      if (!btn || !audio) return;
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        audio.muted = false;
+        audio.play().catch(()=>{});
+        const url = btn.getAttribute('href');
+        setTimeout(() => {
+          window.open(url, '_blank', 'noopener');
+        }, 150);
+      }, { passive: false });
+    })();
+  </script>
+
+  <!-- Verificación NFC / Contador dinámico -->
   <script>
     (async function certificado(){
-      const TOTAL = 15; // cambia si tu tiraje cambia
+      const TOTAL = 15;
       const $ = s => document.querySelector(s);
       const params = new URLSearchParams(location.search);
 
-      // ID como STRING (ej. serialnumber1/15-abcde)
       const idStr = (params.get('id') || '').trim();
       const k     = (params.get('k')  || '').trim();
 
@@ -204,7 +220,6 @@
         return;
       }
 
-      // Mostrar X/15 bonito desde el id
       let pretty = '—/—';
       const m = idStr.match(/^serialnumber(\d+)\s*\/\s*(\d+)-/i);
       if (m) { pretty = `${m[1]}/${m[2]}`; }
@@ -214,8 +229,6 @@
       try {
         const res = await fetch('./caps.json', { cache: 'no-store' });
         const caps = await res.json();
-
-        // Buscar por id string exacto
         const cap = caps.find(c => String(c.id) === idStr);
 
         if (!cap) {
@@ -229,18 +242,15 @@
         if (ok) {
           $pill.textContent = 'Certificado válido';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border font-montserrat glow-white';
-          // Intento adicional de reproducir una vez validado (por si ya hubo interacción)
           if (audio) { audio.play().catch(()=>{}); }
         } else {
           $pill.textContent = 'Token incorrecto';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-red-300 font-montserrat';
         }
 
-        // Imagen (una sola para todas; está en la raíz del repo)
         const imgPath = cap.image || 'gorra-front.png';
         if ($hero) $hero.src = imgPath;
 
-        // Título de la pestaña
         document.title = `Firmeza ${pretty} – Certificado`;
 
       } catch (e) {
