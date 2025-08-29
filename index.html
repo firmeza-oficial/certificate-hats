@@ -60,6 +60,9 @@
         <img src="./Firmeza.svg" alt="Firmeza" class="h-32 md:h-32 object-contain scale-[1.5]" />
       </div>
 
+      <!-- AUDIO oculto -->
+      <audio id="anthem" src="./Hipocresia.mp3" preload="auto" playsinline></audio>
+
     </div>
   </section>
 
@@ -72,23 +75,21 @@
       </div>
 
       <div class="fade-in-up" id="certificate-text">
-  <p class="text-lg md:text-xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-12 font-montserrat">
-    Esta gorra pertenece al  
-    <span class="font-bold text-white tracking-wide glow-white">
-      primer drop de gorras exclusivas
-    </span> de Grupo Firmeza. 
-    Cada pieza ha sido diseñada y fabricada a lujo de detalle. <br><br>
-    En este momento 
-    <span >
-      estás verificando la originalidad de pieza número:
-    </span>
-  </p>
-</div>
-
+        <p class="text-lg md:text-xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-12 font-montserrat">
+          Esta gorra pertenece al  
+          <span class="font-bold text-white tracking-wide glow-white">
+            primer drop de gorras exclusivas
+          </span> de Grupo Firmeza. 
+          Cada pieza ha sido diseñada y fabricada a lujo de detalle. <br><br>
+          <span class="font-semibold text-emerald-400">
+            Estás confirmando la autenticidad de la pieza número:
+          </span>
+        </p>
+      </div>
 
       <!-- Número de edición + estado -->
       <div class="fade-in-up" id="edition-number">
-        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient  glow-white tracking-wide font-oswald" id="number-counter">—/—</div>
+        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient glow-white tracking-wide font-oswald" id="number-counter">—/—</div>
         <div id="verify-pill" class="inline-block mt-2 px-3 py-1 text-sm rounded-full border border-white/20 text-white/90 font-montserrat">
           Verificando...
         </div>
@@ -96,10 +97,10 @@
 
       <!-- CTA -->
       <div class="fade-in-up mt-10" id="cta-button">
-        <a href="https://atom.bio/grupofirmezaoficial" target="_blank" rel="noopener"
-           class="inline-block rounded-md bg-white text-black px-12 py-4 text-xl font-semibold tracking-wider hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-oswald"
+        <a href="https://tu-link-a-musica.com" target="_blank" rel="noopener"
+           class="inline-block bg-white text-black px-12 py-4 text-xl font-semibold tracking-wider rounded-full hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-oswald"
            id="listen-btn">
-          ¡ESCÚCHANOS AQUÍ!
+          Vive la experiencia Firmeza
         </a>
       </div>
     </div>
@@ -108,9 +109,8 @@
   <!-- FOOTER -->
   <footer class="py-12 text-center text-gray-500 z-10 relative">
     <div class="fade-in-up" id="footer">
-      <p class="font-oswald text-2xl mb-2">GRUPO FIRMEZA  X  LS HATS</p>
+      <p class="font-signature text-2xl mb-2">Firmeza</p>
       <p class="text-sm font-montserrat">Edición Limitada © 2025</p>
-      <p class="text-sm font-montserrat">Cada gorra de este drop es de numero es unico, cualquier intento de copia sera demandado por derechos de autor</p>
     </div>
   </footer>
 
@@ -145,6 +145,32 @@
     window.addEventListener('load', ()=>{ createParticles(); });
   </script>
 
+  <!-- Audio: intento de autoplay (mute) + desbloqueo en primer toque -->
+  <script>
+    (function setupAutoplay(){
+      const params = new URLSearchParams(location.search);
+      const wantPlay = params.get('play') === '1';  // opcional ?play=1
+      const audio = document.getElementById('anthem');
+      if (!audio) return;
+
+      // Intento de autoplay silencioso (algunos navegadores lo permiten)
+      audio.muted = true;
+      if (wantPlay) {
+        audio.play().catch(()=>{ /* se intentará tras el primer toque */ });
+      }
+
+      // En el primer toque: desmutear y reproducir
+      const unlock = () => {
+        audio.muted = false;
+        audio.play().catch(()=>{});
+        document.removeEventListener('click', unlock);
+        document.removeEventListener('touchstart', unlock);
+      };
+      document.addEventListener('click', unlock, { once: true });
+      document.addEventListener('touchstart', unlock, { once: true });
+    })();
+  </script>
+
   <!-- Verificación NFC / Contador dinámico - (IDs string tipo serialnumberX/15-xxxx) -->
   <script>
     (async function certificado(){
@@ -159,6 +185,7 @@
       const $counter = $('#number-counter');
       const $pill    = $('#verify-pill');
       const $hero    = $('#hero-cap');
+      const audio    = document.getElementById('anthem');
 
       if (!idStr || !k) {
         $counter.textContent = '—/—';
@@ -171,10 +198,7 @@
       let pretty = '—/—';
       const m = idStr.match(/^serialnumber(\d+)\s*\/\s*(\d+)-/i);
       if (m) { pretty = `${m[1]}/${m[2]}`; }
-      else   { // fallback si no cumple el formato
-        const n = idStr.match(/(\d+)\s*\/\s*(\d+)/);
-        pretty = n ? `${n[1]}/${n[2]}` : `—/${TOTAL}`;
-      }
+      else   { const n = idStr.match(/(\d+)\s*\/\s*(\d+)/); pretty = n ? `${n[1]}/${n[2]}` : `—/${TOTAL}`; }
       $counter.textContent = pretty;
 
       try {
@@ -195,6 +219,8 @@
         if (ok) {
           $pill.textContent = 'Certificado válido';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border font-montserrat glow-white';
+          // Intento adicional de reproducir una vez validado (por si ya hubo interacción)
+          if (audio) { audio.play().catch(()=>{}); }
         } else {
           $pill.textContent = 'Token incorrecto';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-red-300 font-montserrat';
