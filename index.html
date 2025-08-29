@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Firmeza - Edición Limitada</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -11,6 +11,7 @@
     .font-main { font-family: 'Inter', sans-serif; }
     .font-oswald { font-family: 'Oswald', sans-serif; }
     .font-montserrat { font-family: 'Montserrat', sans-serif; }
+
     .crown-animation { animation: crownGlow 3s ease-in-out infinite alternate; }
     @keyframes crownGlow { 0% { filter: drop-shadow(0 0 10px rgba(255,255,255,.3)); } 100% { filter: drop-shadow(0 0 20px rgba(255,255,255,.8)); } }
     .float-animation { animation: float 4s ease-in-out infinite; }
@@ -18,73 +19,66 @@
     .fade-in-up { opacity:0; transform: translateY(30px); transition: all .8s ease; }
     .fade-in-up.visible { opacity:1; transform: translateY(0); }
     .particle { position:absolute; width:4px; height:4px; background: rgba(255,255,255,.6); border-radius:50%; pointer-events:none; }
-    .premium-gradient { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%); }
+
     .text-gradient { background: linear-gradient(45deg, #ffffff, #cccccc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    /* Destello blanco para el pill cuando es válido */
+    .glow-white {
+      color: #fff !important;
+      border-color: #fff !important;
+      animation: glowPulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 5px rgba(255,255,255,.6), 0 0 10px rgba(255,255,255,.4); }
+      to   { text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,.8); }
+    }
   </style>
 </head>
 <body class="bg-black text-white font-main overflow-x-hidden">
-  <!-- Particles Container -->
+
+  <!-- Partículas -->
   <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
-  <!-- Hero Section -->
-  <!-- Hero Section (CORREGIDO) -->
-<section class="relative min-h-screen flex flex-col items-center justify-center px-16  z-16">
-  <div class="relative flex flex-col items-center justify-center w-full">
+  <!-- HERO -->
+  <section class="relative min-h-screen flex flex-col items-center justify-center px-6 z-10">
+    <div class="relative flex flex-col items-center justify-center w-full">
 
-    <!-- Layer 1: Corona (arriba) - POSICIÓN AJUSTADA -->
-    <div class="absolute inset-0 flex items-start justify-center z-10 pointer-events-none ">
-      <img
-        src="./Corona.svg"
-        alt="Corona"
-        class="w-[28rem] h-[28rem] crown-animation object-contain scale-[2.2] -translate-y-24"
-      />
+      <!-- Corona de fondo (arriba) -->
+      <div class="absolute inset-0 flex items-start justify-center z-10 pointer-events-none">
+        <img src="./Corona.svg" alt="Corona"
+             class="w-[28rem] h-[28rem] crown-animation object-contain scale-[2.2] -translate-y-24" />
+      </div>
+
+      <!-- Gorra -->
+      <div class="relative z-20 mb-8 float-animation">
+        <img src="./gorra-front.png" alt="Gorra Firmeza"
+             class="w-80 h-80 object-contain scale-[1.5]" id="hero-cap" />
+      </div>
+
+      <!-- Logo -->
+      <div class="relative z-40 fade-in-up" id="brand-name">
+        <img src="./Firmeza.svg" alt="Firmeza" class="h-32 md:h-32 object-contain scale-[1.5]" />
+      </div>
+
     </div>
-     <div class="absolute inset-0 z-30 pointer-events-none">
-      <div class="absolute bottom-1/3 left-1/2 -translate-x-1/2 w-196 h-132 bg-gradient-to-t from-black via-transparent to-transparent blur-sm"></div>
-    </div>
-    <!-- Layer 2: Gorra -->
-    <div class="relative z-20 mb-8 float-animation">
-      <img
-        src="./gorra-front.png"
-        alt="Gorra Firmeza"
-        class="w-80 h-80 object-contain scale-[1.5]  "
-        id="hero-cap"
-      />
-    </div>
+  </section>
 
-   
-    <!-- Layer 4: Firmeza -->
-    <div class="relative z-40 fade-in-up" id="brand-name">
-      <img
-        src="./Firmeza.svg"
-        alt="Firmeza"
-        class="h-32 md:h-32 object-contain scale-[1.5]"
-      />
-    </div>
-
-  </div>
-</section>
-
-
-  <!-- Certificate Section -->
+  <!-- CERTIFICADO -->
   <section class="relative py-20 px-4 z-10">
     <div class="max-w-4xl mx-auto text-center">
-      <!-- Corona SVG -->
-      
-      <!-- Título con Oswald -->
+
       <div class="fade-in-up" id="certificate-title">
         <h2 class="text-3xl md:text-4xl font-bold mb-8 tracking-wider font-oswald">CERTIFICADO DE ORIGINALIDAD</h2>
       </div>
 
-      <!-- Texto con Montserrat -->
       <div class="fade-in-up" id="certificate-text">
         <p class="text-lg md:text-xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-12 font-montserrat">
-          Esta gorra pertenece a la primera edición exclusiva de Firmeza. Cada pieza ha sido diseñada y fabricada con detalle. 
+          Esta gorra pertenece a la primera edición exclusiva de Firmeza. Cada pieza ha sido diseñada y fabricada con detalle.
           En este momento estás verificando la pieza:
         </p>
       </div>
 
-      <!-- Número de edición + pill de verificación -->
+      <!-- Número de edición + estado -->
       <div class="fade-in-up" id="edition-number">
         <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient font-oswald" id="number-counter">—/—</div>
         <div id="verify-pill" class="inline-block mt-2 px-3 py-1 text-sm rounded-full border border-white/20 text-white/90 font-montserrat">
@@ -103,7 +97,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer class="py-12 text-center text-gray-500 z-10 relative">
     <div class="fade-in-up" id="footer">
       <p class="font-signature text-2xl mb-2">Firmeza</p>
@@ -111,9 +105,9 @@
     </div>
   </footer>
 
-  <!-- Animaciones / Partículas -->
+  <!-- Partículas / efectos ligeros -->
   <script>
-    // Intersection Observer para fade-in
+    // Fade-in
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const observer = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); }, observerOptions);
     document.querySelectorAll('.fade-in-up').forEach(el=>observer.observe(el));
@@ -133,127 +127,84 @@
       @keyframes cursorFade{to{opacity:0; transform:scale(3)}}
     `; document.head.appendChild(style);
 
-    // Efecto cursor glow
+    // Cursor sparkle
     document.addEventListener('mousemove',(e)=>{ const c=document.createElement('div'); c.className='fixed w-1 h-1 bg-white rounded-full pointer-events-none z-50 opacity-50';
       c.style.left=e.clientX+'px'; c.style.top=e.clientY+'px'; c.style.animation='cursorFade .5s ease-out forwards'; document.body.appendChild(c);
       setTimeout(()=>c.remove(),500);
     });
 
-    // Init
     window.addEventListener('load', ()=>{ createParticles(); });
   </script>
 
-  <!-- Verificación NFC / contador dinámico -->
+  <!-- Verificación NFC / Contador dinámico - (IDs string tipo serialnumberX/15-xxxx) -->
   <script>
     (async function certificado(){
       const TOTAL = 15; // cambia si tu tiraje cambia
-      const $ = sel => document.querySelector(sel);
+      const $ = s => document.querySelector(s);
       const params = new URLSearchParams(location.search);
-      const id = Number(params.get('id'));
-      const k  = (params.get('k') || '').trim(); // si el token tiene '/', la URL debe usar %2F
+
+      // ID como STRING (ej. serialnumber1/15-abcde)
+      const idStr = (params.get('id') || '').trim();
+      const k     = (params.get('k')  || '').trim();
 
       const $counter = $('#number-counter');
       const $pill    = $('#verify-pill');
       const $hero    = $('#hero-cap');
 
-      if (!id || !k) {
-        if ($counter) $counter.textContent = '—/—';
-        if ($pill) { $pill.textContent = 'Faltan parámetros (?id=&k=)'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-yellow-500/40 text-yellow-300 font-montserrat'; }
+      if (!idStr || !k) {
+        $counter.textContent = '—/—';
+        $pill.textContent = 'Faltan parámetros (?id=&k=)';
+        $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-yellow-300 font-montserrat';
         return;
       }
 
-      // pinta rápido el contador
-      if ($counter) $counter.textContent = `${id}/${TOTAL}`;
+      // Mostrar X/15 bonito desde el id
+      let pretty = '—/—';
+      const m = idStr.match(/^serialnumber(\d+)\s*\/\s*(\d+)-/i);
+      if (m) { pretty = `${m[1]}/${m[2]}`; }
+      else   { // fallback si no cumple el formato
+        const n = idStr.match(/(\d+)\s*\/\s*(\d+)/);
+        pretty = n ? `${n[1]}/${n[2]}` : `—/${TOTAL}`;
+      }
+      $counter.textContent = pretty;
 
       try {
-        const res = await fetch('./caps.json', { cache:'no-store' });
+        const res = await fetch('./caps.json', { cache: 'no-store' });
         const caps = await res.json();
-        const cap = caps.find(c => Number(c.id) === id);
+
+        // Buscar por id string exacto
+        const cap = caps.find(c => String(c.id) === idStr);
 
         if (!cap) {
-          if ($pill) { $pill.textContent = `No existe la gorra #${id}`; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-red-500/40 text-red-300 font-montserrat'; }
+          $pill.textContent = `No existe el ID: ${idStr}`;
+          $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-red-300 font-montserrat';
           return;
         }
 
         const ok = (cap.token === k);
-        if ($pill) {
-          if (ok) { $pill.textContent='Certificado válido'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-emerald-500/40 text-emerald-300 font-montserrat'; }
-          else { $pill.textContent='Token incorrecto'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-red-500/40 text-red-300 font-montserrat'; }
+
+        if (ok) {
+          $pill.textContent = 'Certificado válido';
+          $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border font-montserrat glow-white';
+        } else {
+          $pill.textContent = 'Token incorrecto';
+          $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-red-300 font-montserrat';
         }
 
-        if ($hero && cap.image) $hero.src = cap.image;
-        document.title = `Firmeza #${id}/${TOTAL} – Certificado`;
+        // Imagen (una sola para todas; está en la raíz del repo)
+        const imgPath = cap.image || 'gorra-front.png';
+        if ($hero) $hero.src = imgPath;
+
+        // Título de la pestaña
+        document.title = `Firmeza ${pretty} – Certificado`;
 
       } catch (e) {
-        if ($pill) { $pill.textContent='Error cargando caps.json'; $pill.className='inline-block mt-2 px-3 py-1 text-sm rounded-full border border-yellow-500/40 text-yellow-300 font-montserrat'; }
         console.error(e);
+        $pill.textContent = 'Error cargando caps.json';
+        $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-yellow-300 font-montserrat';
       }
     })();
   </script>
+
 </body>
 </html>
-
-<script>
-  (async function certificado(){
-    const $ = s => document.querySelector(s);
-    const params = new URLSearchParams(location.search);
-
-    // AHORA: id como STRING (no Number)
-    const idStr = (params.get('id') || '').trim();
-    const k     = (params.get('k')  || '').trim();
-
-    const $counter = $('#number-counter');
-    const $pill    = $('#verify-pill');
-    const $hero    = $('#hero-cap');
-
-    if (!idStr || !k) {
-      $counter.textContent = '—/—';
-      $pill.textContent = 'Faltan parámetros (?id=&k=)';
-      $pill.style.borderColor = 'rgba(234,179,8,.5)'; // amarillo
-      return;
-    }
-
-    // Muestra algo bonito en el contador a partir del id "serialnumberX/15-xxxx"
-    let pretty = '—/—';
-    const m = idStr.match(/^serialnumber(\d+)\s*\/\s*(\d+)-/i);
-    if (m) {
-      pretty = `${m[1]}/${m[2]}`;
-    }
-    $counter.textContent = pretty;
-
-    try {
-      const res = await fetch('./caps.json', { cache: 'no-store' });
-      const caps = await res.json();
-
-      // AHORA: comparar por string exacto
-      const cap = caps.find(c => String(c.id) === idStr);
-
-      if (!cap) {
-        $pill.textContent = `No existe el ID: ${idStr}`;
-        $pill.style.borderColor = 'rgba(239,68,68,.5)'; // rojo
-        return;
-      }
-
-      const ok = (cap.token === k);
-      if (ok) {
-        $pill.textContent = 'Certificado válido';
-        $pill.style.borderColor = 'rgba(16,185,129,.5)'; // verde
-      } else {
-        $pill.textContent = 'Token incorrecto';
-        $pill.style.borderColor = 'rgba(239,68,68,.5)';
-      }
-
-      // Imagen: una sola para todas
-      const imgPath = cap.image || 'assetss/gorra-front.png';
-      if ($hero) $hero.src = imgPath;
-
-      // Título de la pestaña
-      document.title = `Firmeza ${pretty} – Certificado`;
-
-    } catch (e) {
-      console.error(e);
-      $pill.textContent = 'Error cargando caps.json';
-      $pill.style.borderColor = 'rgba(234,179,8,.5)';
-    }
-  })();
-</script>
