@@ -88,7 +88,7 @@
 
       <!-- Número de edición + estado -->
       <div class="fade-in-up" id="edition-number">
-        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient  glow-white tracking-wide font-oswald" id="number-counter">—/—</div>
+        <div class="text-8xl md:text-9xl font-bold mb-2 text-gradient glow-white tracking-wide font-oswald" id="number-counter">—/—</div>
         <div id="verify-pill" class="inline-block mt-2 px-3 py-1 text-sm rounded-full border border-white/20 text-white/90 font-montserrat">
           Verificando...
         </div>
@@ -145,35 +145,47 @@
     window.addEventListener('load', ()=>{ createParticles(); });
   </script>
 
-  <!-- Audio: autoplay (mute) + desbloqueo primer toque + pausar/reanudar -->
+  <!-- Audio: autoplay (mute), forceUnlock (Android/Chrome), pausa/reanuda -->
   <script>
-    (function setupAutoplay(){
+    (function audioSetup(){
       const params = new URLSearchParams(location.search);
       const wantPlay = params.get('play') === '1';
       const audio = document.getElementById('anthem');
       if (!audio) return;
 
+      // 1) Intento silencioso
       audio.muted = true;
+      audio.load();
       if (wantPlay) {
         audio.play().catch(()=>{});
       }
 
-      // Primer toque desbloquea
-      const unlock = () => {
-        audio.muted = false;
-        audio.play().catch(()=>{});
-        document.removeEventListener('click', unlock);
-        document.removeEventListener('touchstart', unlock);
-      };
-      document.addEventListener('click', unlock, { once: true });
-      document.addEventListener('touchstart', unlock, { once: true });
+      // 2) Force unlock: dispara play() dentro del MISMO callback del gesto
+      function unlockNow() {
+        try {
+          audio.muted  = false;
+          audio.volume = 1.0;
+          const p = audio.play();
+          if (p && typeof p.then === 'function') {
+            p.then(()=>{ console.log('Audio desbloqueado 🎶'); })
+             .catch(()=>{ /* si falla, el botón también lo intentará */ });
+          }
+        } catch(e) {}
+        document.removeEventListener('touchend', unlockNow);
+        document.removeEventListener('click', unlockNow);
+      }
+      document.addEventListener('touchend', unlockNow, { once:true });
+      document.addEventListener('click', unlockNow, { once:true });
 
-      // Pausar/reanudar según visibilidad
-      document.addEventListener("visibilitychange", () => {
+      // 3) Pausar al salir y reanudar al volver (si ya estuvo desbloqueado)
+      document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           if (!audio.paused) audio.pause();
         } else {
-          audio.play().catch(()=>{});
+          if (!audio.muted) {
+            audio.volume = 1.0;
+            audio.play().catch(()=>{});
+          }
         }
       });
     })();
@@ -187,14 +199,23 @@
       if (!btn || !audio) return;
 
       btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        audio.muted = false;
-        audio.play().catch(()=>{});
-        const url = btn.getAttribute('href');
-        setTimeout(() => {
-          window.open(url, '_blank', 'noopener');
-        }, 150);
-      }, { passive: false });
+        e.preventDefault();                 // no navegues aún
+        try {
+          audio.muted  = false;
+          audio.volume = 1.0;
+          const p = audio.play();
+          if (p && typeof p.then === 'function') {
+            p.finally(() => {
+              // abrir después de intentar reproducir (mantiene el gesto)
+              window.open(btn.href, '_blank', 'noopener');
+            });
+          } else {
+            window.open(btn.href, '_blank', 'noopener');
+          }
+        } catch(e) {
+          window.open(btn.href, '_blank', 'noopener');
+        }
+      }, { passive:false });
     })();
   </script>
 
@@ -220,6 +241,7 @@
         return;
       }
 
+      // Mostrar X/15 bonito desde el id
       let pretty = '—/—';
       const m = idStr.match(/^serialnumber(\d+)\s*\/\s*(\d+)-/i);
       if (m) { pretty = `${m[1]}/${m[2]}`; }
@@ -242,7 +264,8 @@
         if (ok) {
           $pill.textContent = 'Certificado válido';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border font-montserrat glow-white';
-          if (audio) { audio.play().catch(()=>{}); }
+          // intento extra por si ya hubo interacción
+          if (audio) { audio.muted = false; audio.volume = 1.0; audio.play().catch(()=>{}); }
         } else {
           $pill.textContent = 'Token incorrecto';
           $pill.className = 'inline-block mt-2 px-3 py-1 text-sm rounded-full border text-red-300 font-montserrat';
